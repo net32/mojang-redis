@@ -6,8 +6,6 @@ import (
 	"github.com/go-redis/redis/v8"
 )
 
-const mojang string = "mojang"
-
 var redisCon *redis.Client
 
 func redisConn() *redis.Client {
