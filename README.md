@@ -11,7 +11,7 @@ docker-compose up -d
 Request are the same of [Mojang API](https://wiki.vg/Mojang_API)
 
 ### [Username to UUID](https://wiki.vg/Mojang_API#Username_to_UUID)
-```http
+```js
 GET http://127.0.0.1:8080/users/profiles/minecraft/notch
 ```
 ### Response
@@ -22,7 +22,7 @@ GET http://127.0.0.1:8080/users/profiles/minecraft/notch
 }
 ```
 ### [Usernames to UUIDs](https://wiki.vg/Mojang_API#Usernames_to_UUIDs)
-```http
+```js
 POST http://127.0.0.1:8080/profiles/minecraft
 ```
 #### Body payload
@@ -46,8 +46,28 @@ POST http://127.0.0.1:8080/profiles/minecraft
 	}
 ]
 ```
+### [UUID to Name History](https://wiki.vg/Mojang_API#UUID_to_Name_History)
+```js
+GET http://127.0.0.1:8080/user/profiles/14f19f5050cb44cd9f0bbe906ad59753/names
+```
+### Response
+```json
+[
+	{
+		"name": "HaloIsBae"
+	},
+	{
+		"name": "BilboBeaver",
+		"changedToAt": 1450912796000
+	},
+	{
+		"name": "Bar",
+		"changedToAt": 1495337426000
+	}
+]
+```
 ### [UUID to Profile and Skin/Cape](https://wiki.vg/Mojang_API#UUID_to_Profile_and_Skin.2FCape)
-```http
+```js
 GET http://127.0.0.1:8080/session/minecraft/profile/069a79f444e94726a5befca90e38aaf5
 ```
 ### Response
@@ -62,4 +82,16 @@ GET http://127.0.0.1:8080/session/minecraft/profile/069a79f444e94726a5befca90e38
 		}
 	]
 }
+```
+### [Blocked Servers](https://wiki.vg/Mojang_API#Blocked_Servers)
+```js
+GET http://127.0.0.1:8080/blockedservers
+```
+### Response
+A line-separated list of all SHA1 hashes.
+```
+d7aaeee640a82d97b182d237c46e6fe4c6d55fe3
+fc14b4c345af53bd3a8566de92b71186432253cc
+c5c03d9bad5c5ad25deb64600b9cd900312d4d74
+72fd29f430c91c583bb7216fe673191dc25a7e18
 ```
