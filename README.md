@@ -1,6 +1,12 @@
 # :incoming_envelope: mojang-redis :incoming_envelope:
 A Go MicroService for the Mojang API, to serve responses faster and create REDIS caches for each request.
 
+### FROM 444ms
+<img src="test/not-cache-time.png">
+
+### TO 1ms
+<img src="test/cache-time.png">
+
 ## Quick start with Docker :whale:
 
 ```sh
