@@ -31,8 +31,8 @@ func UuidToNameHistory(uuid string) MojangResponse {
 	return UuidToName(uuid, "names")
 }
 
-func UuidToProfile(uuid string) MojangResponse {
-	URL := SESSION_URL + "session/minecraft/profile/" + uuid
+func UuidToProfile(uuid string, unsigned string) MojangResponse {
+	URL := SESSION_URL + "session/minecraft/profile/" + uuid + "?unsigned=" + unsigned
 	return mojangGet(URL)
 }
 

@@ -48,7 +48,11 @@ func InitServer() {
 	})
 	r.GET("/session/minecraft/profile/:uuid", func(c *gin.Context) {
 		uuid := c.Params.ByName("uuid")
-		writeJsonResponse(c, UuidToProfile(uuid))
+		unsigned, exist := c.GetQuery("unsigned")
+		if !exist {
+			unsigned = "true"
+		}
+		writeJsonResponse(c, UuidToProfile(uuid, unsigned))
 	})
 	r.GET("/blockedservers", func(c *gin.Context) {
 		response := BlockedServers()
