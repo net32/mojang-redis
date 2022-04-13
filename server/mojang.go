@@ -2,6 +2,8 @@ package server
 
 import (
 	"bytes"
+	"crypto/md5"
+	"encoding/hex"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -45,17 +47,24 @@ type MojangResponse struct {
 }
 
 func mojangGet(URL string) MojangResponse {
-	cache := HasCache(URL)
+	key := URL
+	cache := HasCache(key)
 	if cache.hasCache {
 		return cache.response
 	}
 	resp, err := http.Get(URL)
-	return SaveCache(URL, mojangResponse(resp, err)).response
+	return SaveCache(key, mojangResponse(resp, err)).response
 }
 
 func mojangPost(URL string, jsonData []byte) MojangResponse {
+	hashData := hex.EncodeToString(md5.New().Sum(jsonData))
+	key := URL + hashData
+	cache := HasCache(key)
+	if cache.hasCache {
+		return cache.response
+	}
 	resp, err := http.Post(URL, "application/json", bytes.NewBuffer(jsonData))
-	return mojangResponse(resp, err)
+	return SaveCache(key, mojangResponse(resp, err)).response
 }
 
 func mojangResponse(resp *http.Response, err error) MojangResponse {
