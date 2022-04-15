@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-const VERSION = 1.0
+const VERSION = "1.0.2"
 
 var name, author, url = "mojang-redis", "NeT32", "https://github.com/net32/mojang-redis"
 
