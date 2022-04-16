@@ -1,36 +1,44 @@
 # :incoming_envelope: mojang-redis :incoming_envelope:
-A Go MicroService for the Mojang API, to serve responses faster and create REDIS caches for each request.
+A Go microservice for the Mojang API, to serve responses faster and create REDIS caches for each request.
 
-### FROM 444ms
+#### FROM 444ms
 <img src="test/not-cache-time.png">
 
-### TO 1ms
+#### TO 1ms
 <img src="test/cache-time.png">
 
-## Quick start with Docker :whale:
+## :whale: Quick start with Docker
 
 ```sh
 git clone https://github.com/net32/mojang-redis.git
 docker-compose up -d
 ```
-## Examples Request :memo:
+## :memo: API Reference
 Request are the same of [Mojang API](https://wiki.vg/Mojang_API)
 
-### [Username to UUID](https://wiki.vg/Mojang_API#Username_to_UUID)
-```js
-GET http://127.0.0.1:8080/users/profiles/minecraft/notch
+### :pushpin: [Username to UUID](https://wiki.vg/Mojang_API#Username_to_UUID)
+```http
+GET /users/profiles/minecraft/${userName}
+GET /users/profiles/minecraft/notch
 ```
-### Response
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `userName`| `string` | **Required**. Username of player to fetch |
+#### Response
 ```json
 {
 	"name": "Notch",
 	"id": "069a79f444e94726a5befca90e38aaf5"
 }
 ```
-### [Usernames to UUIDs](https://wiki.vg/Mojang_API#Usernames_to_UUIDs)
-```js
-POST http://127.0.0.1:8080/profiles/minecraft
+#
+### :pushpin: [Usernames to UUIDs](https://wiki.vg/Mojang_API#Usernames_to_UUIDs)
+```http
+POST /profiles/minecraft
 ```
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `body`    | `json`   | **Required**. Json payload of userNames to fetch |
 #### Body payload
 ```json
 [
@@ -39,7 +47,7 @@ POST http://127.0.0.1:8080/profiles/minecraft
     "nonExistingPlayer"
 ]
 ```
-### Response
+#### Response
 ```json
 [
 	{
@@ -52,11 +60,16 @@ POST http://127.0.0.1:8080/profiles/minecraft
 	}
 ]
 ```
-### [UUID to Name History](https://wiki.vg/Mojang_API#UUID_to_Name_History)
-```js
-GET http://127.0.0.1:8080/user/profiles/14f19f5050cb44cd9f0bbe906ad59753/names
+#
+### :pushpin: [UUID to Name History](https://wiki.vg/Mojang_API#UUID_to_Name_History)
+```http
+GET /user/profiles/${uuid}/names
+GET /user/profiles/14f19f5050cb44cd9f0bbe906ad59753/names
 ```
-### Response
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `uuid`    | `string` | **Required**. UUID of player to fetch |
+#### Response
 ```json
 [
 	{
@@ -72,11 +85,17 @@ GET http://127.0.0.1:8080/user/profiles/14f19f5050cb44cd9f0bbe906ad59753/names
 	}
 ]
 ```
-### [UUID to Profile and Skin/Cape](https://wiki.vg/Mojang_API#UUID_to_Profile_and_Skin.2FCape)
-```js
-GET http://127.0.0.1:8080/session/minecraft/profile/069a79f444e94726a5befca90e38aaf5
+#
+### :pushpin: [UUID to Profile and Skin/Cape](https://wiki.vg/Mojang_API#UUID_to_Profile_and_Skin.2FCape)
+```http
+GET /session/minecraft/profile/${uuid}?unsigned=false
+GET /session/minecraft/profile/069a79f444e94726a5befca90e38aaf5?unsigned=true
 ```
-### Response
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `uuid`    | `string` | **Required**. UUID of player to fetch |
+| `unsigned`| `boolean` | *Optional*. If need signature use false |
+#### Response
 ```json
 {
 	"id": "069a79f444e94726a5befca90e38aaf5",
@@ -89,11 +108,12 @@ GET http://127.0.0.1:8080/session/minecraft/profile/069a79f444e94726a5befca90e38
 	]
 }
 ```
-### [Blocked Servers](https://wiki.vg/Mojang_API#Blocked_Servers)
-```js
-GET http://127.0.0.1:8080/blockedservers
+#
+### :pushpin: [Blocked Servers](https://wiki.vg/Mojang_API#Blocked_Servers)
+```http
+GET /blockedservers
 ```
-### Response
+#### Response
 A line-separated list of all SHA1 hashes.
 ```
 d7aaeee640a82d97b182d237c46e6fe4c6d55fe3
