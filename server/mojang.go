@@ -36,35 +36,40 @@ func UuidToProfile(uuid string, unsigned string) MojangResponse {
 	return mojangGet(URL)
 }
 
+func HasJoined(userName string, serverId string) MojangResponse {
+	URL := SESSION_URL + fmt.Sprintf("session/minecraft/hasJoined?username=%s&serverId=%s", userName, serverId)
+	return mojangGet(URL)
+}
+
 func BlockedServers() MojangResponse {
 	URL := SESSION_URL + "blockedservers"
 	return mojangGet(URL)
 }
 
 type MojangResponse struct {
-	Code int
-	Json string
+	Code int    `json:"code"`
+	Json string `json:"json"`
 }
 
 func mojangGet(URL string) MojangResponse {
 	key := URL
 	cache := HasCache(key)
-	if cache.hasCache {
-		return cache.response
+	if cache.HasCache {
+		return cache.Response
 	}
 	resp, err := http.Get(URL)
-	return SaveCache(key, mojangResponse(resp, err)).response
+	return SaveCache(key, mojangResponse(resp, err)).Response
 }
 
 func mojangPost(URL string, jsonData []byte) MojangResponse {
 	hashData := hex.EncodeToString(md5.New().Sum(jsonData))
 	key := URL + hashData
 	cache := HasCache(key)
-	if cache.hasCache {
-		return cache.response
+	if cache.HasCache {
+		return cache.Response
 	}
 	resp, err := http.Post(URL, "application/json", bytes.NewBuffer(jsonData))
-	return SaveCache(key, mojangResponse(resp, err)).response
+	return SaveCache(key, mojangResponse(resp, err)).Response
 }
 
 func mojangResponse(resp *http.Response, err error) MojangResponse {

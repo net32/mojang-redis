@@ -36,3 +36,15 @@ func FetchProfileByName(userName string) (model.Profile, MojangResponse) {
 	}
 	return profile, data
 }
+
+func HasPaid(userName string) (string, MojangResponse) {
+	result := "failed"
+	data := UsernameToUUID(userName)
+	if data.Code == 200 {
+		result = "true"
+	}
+	if data.Code == 204 {
+		result = "false"
+	}
+	return result, data
+}

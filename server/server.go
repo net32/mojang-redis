@@ -13,9 +13,9 @@ const VERSION = "1.0.2"
 var name, author, url = "mojang-redis", "NeT32", "https://github.com/net32/mojang-redis"
 
 func InitServer() {
-	log.Println("Starting", name, "developed by", author)
-	log.Println("API Version", VERSION)
-	log.Println("GitHub >", url)
+	log.Printf("Starting %s developed by %s.", name, author)
+	log.Printf("API Version: %s", VERSION)
+	log.Printf("GitHub: %s", url)
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.Default()
 	r.GET("/", func(c *gin.Context) {
@@ -54,9 +54,19 @@ func InitServer() {
 		}
 		writeJsonResponse(c, UuidToProfile(uuid, unsigned))
 	})
+	r.GET("/session/minecraft/hasJoined", func(c *gin.Context) {
+		userName, _ := c.GetQuery("username")
+		serverId, _ := c.GetQuery("serverId")
+		writeJsonResponse(c, HasJoined(userName, serverId))
+	})
 	r.GET("/blockedservers", func(c *gin.Context) {
 		response := BlockedServers()
 		c.String(response.Code, response.Json)
+	})
+	r.GET("/auth/haspaid/:name", func(c *gin.Context) {
+		userName := c.Params.ByName("name")
+		response, _ := HasPaid(userName)
+		c.String(200, response)
 	})
 	addr := ":" + GetEnv("PORT", "8080")
 	log.Println("Listen: " + addr)
