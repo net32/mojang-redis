@@ -42,6 +42,7 @@ func InitServer() {
 		}
 		writeJsonResponse(c, UsernamesToUUIDs(b))
 	})
+	// This endpoint has been deprecated by Mojang and was removed on 13 September 2022 at 9:25 AM CET to "improve player safety and data privacy"
 	r.GET("/user/profiles/:uuid/*action", func(c *gin.Context) {
 		uuid := c.Params.ByName("uuid")
 		writeJsonResponse(c, UuidToNameHistory(uuid))

@@ -27,6 +27,7 @@ func UuidToName(uuid string, action string) MojangResponse {
 	return mojangGet(URL)
 }
 
+// This endpoint has been deprecated by Mojang and was removed on 13 September 2022 at 9:25 AM CET to "improve player safety and data privacy"
 func UuidToNameHistory(uuid string) MojangResponse {
 	return UuidToName(uuid, "names")
 }

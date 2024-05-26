@@ -58,7 +58,7 @@ func HasCache(cacheKey string) CacheResponse {
 
 func SaveCache(cacheKey string, response MojangResponse) CacheResponse {
 	saved := false
-	if response.Code < 500 {
+	if response.Code < 405 {
 		data, err := json.Marshal(response)
 		if err != nil {
 			log.Println(err, "SaveCache:", cacheKey, response)

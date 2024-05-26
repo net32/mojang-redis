@@ -43,7 +43,7 @@ func HasPaid(userName string) (string, MojangResponse) {
 	if data.Code == 200 {
 		result = "true"
 	}
-	if data.Code == 204 {
+	if data.Code == 404 {
 		result = "false"
 	}
 	return result, data

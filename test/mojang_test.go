@@ -31,10 +31,10 @@ func TestFetchProfileByName(t *testing.T) {
 }
 
 func TestUuidToNameHistory(t *testing.T) {
-	t.Log("Testing UuidToNameHistory expected", HTTP_200_OK)
+	t.Log("Testing UuidToNameHistory expected", HTTP_404_Not_Found)
 	response := server.UuidToNameHistory("c5870df7-44e9-495f-928a-0e3e8703a03e")
-	if response.Code != HTTP_200_OK {
-		t.Errorf("Expected %d return %d", HTTP_200_OK, response.Code)
+	if response.Code != HTTP_404_Not_Found {
+		t.Errorf("Expected %d return %d", HTTP_404_Not_Found, response.Code)
 	}
 	t.Log("Response:", response)
 }
@@ -46,4 +46,22 @@ func TestBlockedServers(t *testing.T) {
 		t.Errorf("Expected %d return %d", HTTP_200_OK, response.Code)
 	}
 	t.Log("Response:", response.Code, "total", len(response.Json))
+}
+
+func TestHasPaidTrue(t *testing.T) {
+	t.Log("Testing HasPaid expected", "true")
+	response, data := server.HasPaid("net32")
+	if response != "true" {
+		t.Errorf("Expected %s return %s", "true", response)
+	}
+	t.Log("Response:", response, "data", data)
+}
+
+func TestHasPaidFalse(t *testing.T) {
+	t.Log("Testing HasPaid expected", "false")
+	response, data := server.HasPaid("net32_random_404_name")
+	if response != "false" {
+		t.Errorf("Expected %s return %s", "false", response)
+	}
+	t.Log("Response:", response, "data", data)
 }
